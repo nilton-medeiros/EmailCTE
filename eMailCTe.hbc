@@ -1,0 +1,4 @@
+inc=yes
+head=native
+libs=sistrom_aux
+warn=max

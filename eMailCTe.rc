@@ -1,0 +1,38 @@
+1 VERSIONINFO
+  FILEVERSION 4,5,6
+ {
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904E4"
+        {
+            VALUE "CompanyName"      , "Sistrom Sistemas Web"
+            VALUE "FileDescription"  , "SISTEMA DE ENVIO DE EMAILs DE CTe DO TMS.CLOUD"
+            VALUE "LegalCopyright"   , "Copyright (c) Sistrom Web"
+            VALUE "OriginalFilename" , "eMailCTe.exe"
+            VALUE "ProductName"      , "eMail CTe"
+            VALUE "ProductVersion"   , "4.5.6.Hb.MS"
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0416, 1252
+    }
+}
+AppIcon     ICON "recursos\\sistrom.ico"
+ICONE       ICON recursos\sistrom.ico
+MainIcon    ICON recursos\sistrom.ico
+dbIcon      ICON recursos\database.ico
+dbOn        ICON recursos\letter.ico
+dbOff       ICON recursos\database_off.ico
+bdRefresh   ICON recursos\database_gear.ico
+bdError     ICON recursos\database_error.ico
+emailIcon   ICON recursos\email.ico
+emailOpen   ICON recursos\email_open.ico
+emailEdit   ICON recursos\email_edit.ico
+emailAttach ICON recursos\email_attach.ico
+emailLink   ICON recursos\email_link.ico
+emailSend   ICON recursos\email_go.ico
+btVer       PNG  recursos\eye.png
+nfConfig    PNG  recursos\config.png
+nfDesligar  PNG  recursos\turn_off.ico
+nfAbout     PNG  recursos\sobre.png

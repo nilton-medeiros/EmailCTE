@@ -1,0 +1,280 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 181 , 369 WIDTH 523 HEIGHT 319 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "Registro do Banco de Dados" ICON "fmgRegEdit"  TOPMOST NOMAXIMIZE NOMINIMIZE CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR Nil NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE LABEL Label_1
+        ROW    30
+        COL    20
+        WIDTH  460
+        HEIGHT 20
+        VALUE "Forneça as informações iniciais para acessar o Banco de Dados (Host)"
+        FONTNAME "Arial"
+        FONTSIZE 11
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL Label_2
+        ROW    50
+        COL    20
+        WIDTH  460
+        HEIGHT 24
+        VALUE "Nota: * Estas informações será solicitada apenas uma vez neste Desktop/PC"
+        FONTNAME "Arial"
+        FONTSIZE 10
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL Label_3
+        ROW    110
+        COL    20
+        WIDTH  100
+        HEIGHT 18
+        VALUE "Servidor / IP:"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL Label_4
+        ROW    140
+        COL    20
+        WIDTH  100
+        HEIGHT 18
+        VALUE "Banco de Dados:"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL Label_5
+        ROW    170
+        COL    20
+        WIDTH  100
+        HEIGHT 18
+        VALUE "Usuário:"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL Label_6
+        ROW    200
+        COL    20
+        WIDTH  100
+        HEIGHT 18
+        VALUE "Senha:"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE IPADDRESS IpAddress_host
+        ROW    105
+        COL    130
+        WIDTH  340
+        HEIGHT 24
+        VALUE { 0 , 0 , 0 , 0 }
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        TABSTOP .T.
+        VISIBLE .T.
+    END IPADDRESS
+
+    DEFINE TEXTBOX Text_DataBase
+        ROW    135
+        COL    130
+        WIDTH  340
+        HEIGHT 24
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONENTER Nil
+        HELPID Nil
+        TABSTOP .T.
+        VISIBLE .T.
+        READONLY .F.
+        RIGHTALIGN .F.
+        DISABLEDBACKCOLOR Nil
+        DISABLEDFONTCOLOR Nil
+        CASECONVERT NONE
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        INPUTMASK Nil
+        FORMAT Nil
+        VALUE ""
+    END TEXTBOX
+
+    DEFINE TEXTBOX Text_User
+        ROW    165
+        COL    130
+        WIDTH  340
+        HEIGHT 24
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONENTER Nil
+        HELPID Nil
+        TABSTOP .T.
+        VISIBLE .T.
+        READONLY .F.
+        RIGHTALIGN .F.
+        DISABLEDBACKCOLOR Nil
+        DISABLEDFONTCOLOR Nil
+        CASECONVERT NONE
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        INPUTMASK Nil
+        FORMAT Nil
+        VALUE ""
+    END TEXTBOX
+
+    DEFINE TEXTBOX Text_Password
+        ROW    195
+        COL    130
+        WIDTH  340
+        HEIGHT 24
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONENTER Nil
+        HELPID Nil
+        TABSTOP .T.
+        VISIBLE .T.
+        READONLY .F.
+        RIGHTALIGN .F.
+        DISABLEDBACKCOLOR Nil
+        DISABLEDFONTCOLOR Nil
+        CASECONVERT NONE
+        PASSWORD .T.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        INPUTMASK Nil
+        FORMAT Nil
+        VALUE ""
+    END TEXTBOX
+
+    DEFINE BUTTON Button_Salvar
+        ROW    230
+        COL    370
+        WIDTH  100
+        HEIGHT 30
+        ACTION registraBD_Button_Salvar_Action()
+        CAPTION "&Salvar"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP "Testar e Salvar Conexão"
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .T.
+        MULTILINE .F.
+        PICTURE "btSave"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+END WINDOW
+

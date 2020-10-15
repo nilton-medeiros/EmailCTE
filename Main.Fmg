@@ -1,0 +1,18 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 192 , 388 WIDTH 550 HEIGHT 304 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "eMailCTe - TMS Expresso.Cloud" ICON NIL MAIN NOSHOW CURSOR NIL ON INIT main_form_oninit() ON RELEASE main_form_onrelease() ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR Nil NOTIFYICON "MainIcon" NOTIFYTOOLTIP NIL ON NOTIFYCLICK config() ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE NOTIFY MENU
+        MENUITEM "Opções" ACTION config() NAME mnf_config IMAGE "nfConfig"
+        MENUITEM "Sobre" ACTION sobre() NAME mnf_sobre IMAGE "nfAbout"
+    SEPARATOR
+        MENUITEM "Desligar" ACTION desligar() NAME mnf_desligar IMAGE "nfDesligar"
+    END MENU
+
+    DEFINE TIMER Timer_Mail INTERVAL 60000 ACTION  main_timer_Mail_action()
+
+    DEFINE TIMER Timer_yes_update INTERVAL 10000 ACTION  main_timer_yes_update_action()
+
+END WINDOW
+
