@@ -37,7 +37,7 @@ Procedure UpLoadMailEvents()
 
           // Da baixa nos ctes que foram enviado emails
 
-          if (nEMail > 1)
+          if !(i == 0)
 
              // Houve eMails enviados, dar baixa no BD
 
@@ -64,9 +64,9 @@ Procedure UpLoadMailEvents()
                 RELEASE WINDOW ALL
              end
              RegistraLog('UPDATE SQL: ' + mail_sql )
-         else
+          else
             RegistraLog('Array g_aMaiLogEvent retornou vazio!')
-         end
+          end
 
           if !(i == 0)
             // Lança os eventos relacionados a baixa dos PDFs & MXLs
@@ -93,9 +93,9 @@ Procedure UpLoadMailEvents()
                RELEASE WINDOW ALL
             end
             RegistraLog('INSERT SQL: ' + evts_sql )
-         else
+          else
             RegistraLog('Array g_aMaiLogEvent retornou vazio!')
-         endif
+          endif
 
           g_aMaiLogEvent := {}     //  Limpa e reinicia o log de enventos do eMail
 
