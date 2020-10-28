@@ -88,9 +88,10 @@ Procedure envia_emails( oQuery )
 
               //https://www.sistrom.com.br/stslog/mod/conhecimentos/ctes/files/35170305197756000196570010000521271000005618.xml
               xml_File := Token(xml_Link, '/')
-              folder := g_oEmpresas:xml_FolderDown + '20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + '\CTe\'
+              folder := g_oEmpresas:xml_FolderDown + '20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + iif(AllTrim(oRow:FieldGet('cte_situacao')) == 'CANCELADO', '\Evento\Cancelamento\', '\CTe\')
+
               if !hb_FileExists(folder + xml_File)
-               folder := 'C:\ACBrMonitorPLUS\DFes\' + SubStr(oRow:FieldGet('cte_chave'), 7, 14) + '\20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + '\CTe\'
+               folder := 'C:\ACBrMonitorPLUS\DFes\' + SubStr(oRow:FieldGet('cte_chave'), 7, 14) + '\20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + iif(AllTrim(oRow:FieldGet('cte_situacao')) == 'CANCELADO', '\Evento\Cancelamento\', '\CTe\')
               endif
               xml_File := folder + xml_File
 
