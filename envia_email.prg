@@ -47,7 +47,7 @@ Procedure envia_emails( oQuery )
                  LOOP
               end
 
-              oEmail := Tsmtp_email():new(g_oEmpresas:smtp_servidor, g_oEmpresas:smtp_porta)
+              oEmail := Tsmtp_email():new(g_oEmpresas:smtp_servidor, g_oEmpresas:smtp_porta, hb_FileExists('trace_email.txt'))
 
               cEmitente := AllTrim(HB_ULEFT( g_oEmpresas:Nome, HB_UTF8RAT( '(', g_oEmpresas:Nome )-2 ) )
               cFone := g_oEmpresas:Fone
@@ -346,7 +346,7 @@ Procedure envia_emails( oQuery )
                     nQtdEMail := HMG_LEN(aCC) + 1
 
                     MsgStatus('Enviando e-mail contabilidade', 'emailSend' )
-                    RegistraLog( 'Enviando e-mail para contabilidade CTE: ' + cNoCte + ' (' + g_oEmpresas:sigla_cia + ')' )
+                    RegistraLog( 'Enviando e-mail para contabilidade ' + eMailContabil + ' | CTE: ' + cNoCte + ' (' + g_oEmpresas:sigla_cia + ')' )
 
                     if oEmail:sendmail()
 

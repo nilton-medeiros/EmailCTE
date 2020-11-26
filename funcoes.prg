@@ -196,7 +196,7 @@ Procedure RegistraLog( cRegistra, lSaltarLinha )
           Local cLogMsg, nHandle
           Local cDate    := DTOC(Date())
           Local cFolder  := 'log'+hb_ps()
-          Local cLogFile := 'email_log_' + HB_URIGHT(cDate,2) + HB_USUBSTR(cDate,4,2) + '_' + HB_ULEFT(cDate,1) + '.txt'
+          Local cLogFile := 'email_log_' + HB_URIGHT(cDate,4) + HB_USUBSTR(cDate,4,2) + '.txt'
 
           DEFAULT lSaltarLinha := false
 
