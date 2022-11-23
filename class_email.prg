@@ -66,6 +66,8 @@ method setLogin(from, user, pass, smtp_pass, replyTo) class Tsmtp_email
 return nil
 
 method setRecipients(to, cc, bcc) class Tsmtp_email
+   cc := iif(ValType(cc) == 'A', cc, {})
+   bcc := iif(ValType(bcc) == 'A', bcc, {})
    ::recipients := {'To' => to, 'Cc' => AClone(cc), 'Bcc' => AClone(bcc)}
 return nil
 
@@ -88,6 +90,27 @@ method bcc_as_string() class Tsmtp_email
 return eMail
 
 method sendmail() class Tsmtp_email
+   local log
+   if ::trace
+      log := 'Server: ' + ::server + hb_eol()
+      log += 'Port: ' + hb_ntos(::port) + hb_eol()
+      log += 'From: ' + ::login['From'] + hb_eol()
+      log += 'To: ' + ::recipients['To'] + hb_eol()
+      log += 'Cc: ' + array_to_string(::recipients['Cc']) + hb_eol()
+      log += 'Bcc: ' + array_to_string(::recipients['Bcc']) + hb_eol()
+      log += 'Body: ' + ::msg['Body'] + hb_eol()
+      log += 'Subject ' + ::msg['Subject'] + hb_eol()
+      log += 'Attachment: ' + array_to_string(::attachment) + hb_eol()
+      log += 'User: ' + ::login['User'] + hb_eol()
+      log += 'Pass: *********' + hb_eol()
+      log += 'POP Server: ' + ::popServer + hb_eol()
+      log += 'POP Auth: ' + iif(::popAuth, 'true', 'false') + hb_eol()
+      log += 'No Auth: ' + iif(::noAuth, 'true', 'false') + hb_eol()
+      log += 'ReplyTo: ' + iif(ValType(::login['ReplyTo']) == "C", ::login['ReplyTo'], '') + hb_eol()
+      log += 'TLS: ' + iif(::isTLS, 'true', 'false') + hb_eol()
+      log += 'SMTPPass: *******' + hb_eol()
+      RegistraLog(log, true)
+   endif
 return hb_SendMail( ::server,;
                     ::port,;
                     ::login['From'],;

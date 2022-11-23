@@ -1,6 +1,6 @@
 #include <hmg.ch>
 
-Procedure UpLoadMailEvents()
+Procedure upload_mail_events()
           Local i := 0, nId_cte := 0, nEMail := 1
           Local oQuery
           Local hMail
@@ -103,7 +103,7 @@ Procedure UpLoadMailEvents()
 
 Return
 
-Procedure UpLoadMailErros()
+Procedure upload_mail_errors()
           Local i := 0, nId_cte := 0, nEMail := 1
           Local oQuery, hMail
           Local mail_sql := "UPDATE ctes SET cte_arquivos_baixados=0 WHERE cte_id IN ("
@@ -166,8 +166,8 @@ Procedure UpLoadMailErros()
                 RELEASE WINDOW ALL
              end
              RegistraLog('UPDATE SQL: ' + mail_sql )
-          else
-            RegistraLog('Array g_aMaiLogEvent retornou vazio!')
+//        else
+//          RegistraLog('Array g_aMaiComErros retornou vazio!')
           end
 
           if !(i == 0)
@@ -197,8 +197,8 @@ Procedure UpLoadMailErros()
                 RELEASE WINDOW ALL
              end
              RegistraLog('INSERT SQL: ' + evts_sql )
-         else
-            RegistraLog('Array g_aMaiLogEvent retornou vazio!')
+//       else
+//          RegistraLog('Array g_aMaiComErros retornou vazio!')
          endif
           g_aMaiComErros := {}     //  Limpa e reinicia o log de enventos do eMail
 

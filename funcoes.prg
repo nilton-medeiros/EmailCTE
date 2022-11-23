@@ -387,3 +387,29 @@ Function is_true( xBoolean )
          end
 
 Return (.F.)
+
+Function array_to_string(arrayOfString)
+   local result := '', conteudo
+   if ValType(arrayOfString) == "A" .and. Len(arrayOfString) > 0
+      for each conteudo in arrayOfString
+         switch ValType(conteudo)
+            case "C"
+               exit
+            case "D"
+               conteudo := DToC(conteudo)
+               exit
+            case "N"
+               conteudo := hb_ntos(conteudo)
+               exit
+            case "L"
+               conteudo := iif(conteudo, 'true', 'false')
+               exit
+            otherwise
+               conteudo := 'Tipo do conteúdo do array não é string. Tipo: "' + ValType(conteudo) + '"'
+         endswitch
+         result += ' | ' + conteudo
+      next
+   elseif ValType(arrayOfString) == "C"
+      result := arrayOfString
+   endif
+return LTrim(result)

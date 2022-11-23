@@ -3,7 +3,6 @@
 #define true  .T.
 #define false .F.
 
-// Atualizado 2022-05-31 12:30
 Procedure envia_emails( oQuery )
           Local cEmitente, cFone, eMailComercial, eMailContabil, cPortal, cMail, cIPEx
           Local cNoCte, cTotEmails
@@ -70,7 +69,7 @@ Procedure envia_emails( oQuery )
                  xml_Link := AllTrim(oRow:FieldGet('cte_xml'))
               end
 
-              //https://<dominio+empresa>/mod/conhecimentos/ctes/files/35200557296543000115570010000310181000310830-cte.pdf
+              //https://www.sistrom.com.br/alexpress/mod/conhecimentos/ctes/files/35200557296543000115570010000310181000310830-cte.pdf
               pdf_File := Token(pdf_Link, '/')
               folder := g_oEmpresas:pdf_FolderDown + '20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + '\CTe\'
               if !hb_FileExists(folder + pdf_File)
@@ -87,7 +86,7 @@ Procedure envia_emails( oQuery )
                  RegistraLog('Arquivo ' + pdf_File + ' não encontrado')
               end
 
-              //https://<dominio+empresa>/mod/conhecimentos/ctes/files/35170305197756000196570010000521271000005618.xml
+              //https://www.sistrom.com.br/stslog/mod/conhecimentos/ctes/files/35170305197756000196570010000521271000005618.xml
               xml_File := Token(xml_Link, '/')
               folder := g_oEmpresas:xml_FolderDown + '20' + Substr(oRow:FieldGet('cte_chave'), 3, 4) + iif(AllTrim(oRow:FieldGet('cte_situacao')) == 'CANCELADO', '\Evento\Cancelamento\', '\CTe\')
 
@@ -338,6 +337,7 @@ Procedure envia_emails( oQuery )
                     end
 
                     nLen := HMG_LEN(aCC)
+                    oEmail:setRecipients(cTo, aCC, aBCC)
 
                     MsgStatus('Anexando XML...', 'emailAttach' )
                     AADD(oEmail:attachment, xml_File)
@@ -376,7 +376,7 @@ Procedure envia_emails( oQuery )
               if i > nMaxMail
                  // A cada 10 emails, faz update no BD
                  MsgStatus()
-                 UpLoadMailEvents()
+                 upload_mail_events()
                  nMaxMail += 10
               end
 

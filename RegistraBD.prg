@@ -37,10 +37,10 @@ Procedure registraBD_Button_Salvar_Action()
 Return
 
 Function IPArrayToString( aIP )
-         Local cIP := LTrim(STR(aIP[1]))
-         cIP += '.' + LTrim(STR(aIP[2]))
-         cIP += '.' + LTrim(STR(aIP[3]))
-         cIP += '.' + LTrim(STR(aIP[4]))
+         Local cIP := hb_ntos(aIP[1])
+         cIP += '.' + hb_ntos(aIP[2])
+         cIP += '.' + hb_ntos(aIP[3])
+         cIP += '.' + hb_ntos(aIP[4])
 Return ( cIP )
 
 procedure registraBD_Form_onEscape()

@@ -94,8 +94,8 @@ Procedure GetMailsWeb()
 
                 if !(oQry:LastRec() == 0)
                    envia_emails(oQry)
-                   UpLoadMailEvents()
-                   UpLoadMailErros()
+                   upload_mail_events()
+                   upload_mail_errors()
                    MsgStatus()
                 end
 
