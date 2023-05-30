@@ -133,7 +133,13 @@ Procedure envia_emails( oQuery )
 
                  if ( oRow:FieldGet('cte_exibe_consulta_cliente') == 1 )
 
-                    GetArrayEmails( oRow:FieldGet('clie_tomador_id'), oRow:FieldGet('clie_remetente_id'), oRow:FieldGet('clie_coleta_id'), oRow:FieldGet('clie_expedidor_id'), oRow:FieldGet('clie_recebedor_id'), oRow:FieldGet('clie_destinatario_id'), oRow:FieldGet('clie_entrega_id') )
+                    GetArrayEmails( oRow:FieldGet('clie_tomador_id'), ;
+                                    oRow:FieldGet('clie_remetente_id'), ;
+                                    oRow:FieldGet('clie_coleta_id'), ;
+                                    oRow:FieldGet('clie_expedidor_id'), ;
+                                    oRow:FieldGet('clie_recebedor_id'), ;
+                                    oRow:FieldGet('clie_destinatario_id'), ;
+                                    oRow:FieldGet('clie_entrega_id') )
 
                     if (nLen == 0)
                        AADD(g_aMaiLogEvent, {'emp_id' => nEmpId, 'cte_id' => oRow:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail comercial da empresa nao cadastrado!'} )
