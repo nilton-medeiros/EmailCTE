@@ -83,7 +83,7 @@ Procedure GetMailsWeb()
 
              if oQry:NetErr()
 
-                RegistraLog('Sem conexão com a internet; Erro SQL: ' + oQry:Error() + CRLF + '| SQL: ' + sql)
+                RegistraLog('Sem conexão com a internet; Erro SQL: ' + oQry:Error() + CRLF + '| SQL: ' + sql,, true)
                 PlayExclamation()
                 MsgExclamation('Sem conexão com a internet; Erro SQL: ' + CRLF + oQry:Error(), 'eMailCTe: Carregando CTes')
                 MsgExclamation({'Ligue para o Suporte ou reinicie o programa novamente!', CRLF, CRLF, 'Descrição do comando SQL: ', CRLF, sql}, 'eMailCTe: Erro de conexão com internet')
@@ -104,7 +104,7 @@ Procedure GetMailsWeb()
              oQry:Destroy()
 
           else
-             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql)
+             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql,, true)
              MsgStatus( 'Solicitação SQL ao Servidor foi perdida', 'dbOff' )
              PlayExclamation()
              MsgExclamation('Solicitação SQL ao Servidor foi perdida', 'eMailCTe: Monitorando eMail(s)')

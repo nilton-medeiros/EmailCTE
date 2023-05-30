@@ -436,9 +436,9 @@ Procedure GetArrayEmails( _tomador_id, _remetente_id, _coleta_id, _expedidor_id,
                 PlayExclamation()
                 System.Clipboard := 'Erro SQL: ' + CRLF + oQuery:Error() + CRLF + 'Descrição do comando SQL: ' + CRLF + sql  // Debug
                 MsgExclamation('Erro SQL: ' + CRLF + oQuery:Error(), 'eMailCTe: Carregando Contatos')
-                MsgExclamation({'Descrição do comando SQL: ', CRLF, sql, CRLF, 'Ligue para o Suporte ou tente reiniciar o programa'}, 'eMailCTe: Erro de SQL')
+                MsgExclamation('Ligue para o Suporte ou tente reiniciar o programa', 'eMailCTe: Erro de SQL')
                 oQuery:Destroy()
-                RegistraLog('Carregando Contatos. Erro SQL: ' + oQuery:Error())
+                RegistraLog('Carregando Contatos. Erro SQL: ' + oQuery:Error() + hb_eol() + 'SQL: ' + sql,, true)
                 RELEASE WINDOW ALL
              else
 
@@ -461,7 +461,7 @@ Procedure GetArrayEmails( _tomador_id, _remetente_id, _coleta_id, _expedidor_id,
 
           else
 
-             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql)
+             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql,, true)
              MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
              PlayExclamation()
              MsgExclamation({'Solicitação SQL ao Servidor foi perdida', CRLF, sql}, 'eMailCTe: Contatos')
