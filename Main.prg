@@ -13,7 +13,7 @@ Procedure Main
           Public g_aMaiLogEvent := {}
           Public g_aMaiComErros := {}
           Public g_aUsuarios    := {}
-          Public g_hEMailServer := hb_Hash( 'dia', date(), 'server_1', 0, 'server_2', 0 )
+          // Public g_hEMailServer := hb_Hash( 'dia', date(), 'server_1', 0, 'server_2', 0 )
 
           Public g_iTimer       := Seconds()
           Public g_iTimer_Erro  := Seconds()

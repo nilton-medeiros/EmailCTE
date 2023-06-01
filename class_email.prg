@@ -14,8 +14,9 @@
 create class Tsmtp_email
    data server readonly
    data port readonly
-   data from readonly
    data recipients readonly
+   data subject readonly
+   data body readonly
    data msg readonly
    data attachment
    data login readonly
@@ -32,12 +33,15 @@ create class Tsmtp_email
 
    method new(server, port, trace) constructor
    method setLogin(from, user, pass, smtp_pass, replyTo)
-   method setRecipients(to, cc, bcc)
-   method setMsg(subject, body)
+   method setRecipients(eTo, cc, bcc)
+   method prepare(content)
    method cc_as_string()
    method bcc_as_string()
+   method attachFile(file)
+   method is_not_attached()
    method sendmail()
    method reset()
+   method destroy()
 end class
 
 method new(server, port, trace) class Tsmtp_email
@@ -65,29 +69,54 @@ method setLogin(from, user, pass, smtp_pass, replyTo) class Tsmtp_email
    endif
 return nil
 
-method setRecipients(to, cc, bcc) class Tsmtp_email
-   cc := iif(ValType(cc) == 'A', cc, {})
-   bcc := iif(ValType(bcc) == 'A', bcc, {})
-   ::recipients := {'To' => to, 'Cc' => AClone(cc), 'Bcc' => AClone(bcc)}
+method setRecipients(eTo, cc, bcc) class Tsmtp_email
+   ::recipients := {'To' => eTo, 'Cc' => AClone(cc), 'Bcc' => AClone(bcc)}
 return nil
 
-method setMsg(subject, body) class Tsmtp_email
-   ::msg := {'Subject' => subject, 'Body' => body}
+method prepare(content) class Tsmtp_email
+   ::subject := content['assunto']
+   ::body := '<html>' + hb_eol() + '<body>' + hb_eol()
+   ::body += content['assunto'] + hb_eol() + hb_eol()
+   ::body += 'ENVIO DE CT-e' + hb_eol() + hb_eol() + hb_eol()
+   ::body += 'Esta empresa não envia SPAM! Este é um e-mail obrigatório por lei.' + hb_eol() + hb_eol()
+   ::body += 'Voce esta recebendo um Conhecimento de Transporte Eletrônico de ' + content['nomeRemetente'] + '.' + hb_eol()
+   ::body += 'Caso nao queira receber este e-mail, favor entrar em contato pelo e-mail comercial ' + ::recipients['To'] + '.' + hb_eol() + hb_eol()
+   ::body += 'O arquivo XML do CT-e encontra-se anexado a este e-mail.' + hb_eol()
+   ::body += 'Para verificar a autorização do CT-e junto a SEFAZ, acesse o Portal de consulta através do endereço: https://www.cte.fazenda.gov.br.' + hb_eol() + hb_eol()
+   ::body += 'No campo "Chave de acesso", inclua a numeração da chave de acesso abaixo (sem o literal "CTe") e complete a consulta com as informações solicitadas pelo Portal.' + hb_eol() + hb_eol() + hb_eol()
+   ::body += 'Chave de acesso:  ' + content["cteChave"] + hb_eol() + hb_eol() + hb_eol() + hb_eol()
+   ::body += 'Atenciosamente,' + hb_eol() + hb_eol()
+   ::body += content['nomeRemetente'] + hb_eol()
+   ::body += content['foneRemetente'] + hb_eol()
+   ::body += ::recipients['To'] + hb_eol() + hb_eol()
+   ::body += 'TMS Expresso.Cloud' + hb_eol()
+
+   if !Empty(content['portal'])
+      ::body += 'Acompanhe sua carga pelo portal' + hb_eol()
+      ::body += content['portal'] + hb_eol()
+   end
+
+   ::body +=  hb_eol() + hb_eol() + '*** Esse é um e-mail automático. Não é necessário respondê-lo ***' + hb_eol()
+   ::body += '</body>' + hb_eol() + '</html>'
+
 return nil
 
 method cc_as_string() class Tsmtp_email
-   local mail, eMail := ''
-   for each mail in ::recipients['Cc']
-      eMail += mail + ';'
-   next
+   local eMail := ''
+   AEval(::recipients['Cc'], {|mail| eMail += mail + ';'})
 return eMail
 
 method bcc_as_string() class Tsmtp_email
-   local mail, eMail := ''
-   for each mail in ::recipients['Bcc']
-      eMail += mail + ';'
-   next
+   local eMail := ''
+   AEval(::recipients['Bcc'], {|mail| eMail += mail + ';'})
 return eMail
+
+method attachFile(file) class Tsmtp_email
+   AAdd(::attachment, file)
+return nil
+
+method is_not_attached() class Tsmtp_email
+return (hmg_len(::attachment) == 0)
 
 method sendmail() class Tsmtp_email
    local log
@@ -114,9 +143,9 @@ method sendmail() class Tsmtp_email
 return hb_SendMail( ::server,;
                     ::port,;
                     ::login['From'],;
-                    ::recipients['To'],;
-                    ::recipients['Cc'],;
-                    ::recipients['Bcc'],;
+                    ::recipients['To'],;  // string email To
+                    ::recipients['Cc'],;  // array emails CC
+                    ::recipients['Bcc'],; // array emails BCC
                     ::msg['Body'],;
                     ::msg['Subject'],;
                     ::attachment,;
@@ -139,3 +168,10 @@ method reset() class Tsmtp_email
    ::recipients := {'To' => '', 'Cc' => {}, 'Bcc' => {}}
    ::attachment := {}
 return nil
+
+method destroy() class Tsmtp_email
+   ::recipients := nil
+   ::attachment := nil
+   ::login := nil
+   ::msg := nil
+return self

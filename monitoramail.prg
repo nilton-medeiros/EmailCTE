@@ -50,7 +50,7 @@ Procedure GetMailsWeb()
           sql += "cte_cancelado_pdf, "
           sql += "cte_xml, "
           sql += "cte_cancelado_xml, "
-          sql += "cte_exibe_consulta_cliente "
+          sql += "cte_exibe_consulta_cliente AS enviar_email_cliente "
           sql += "FROM ctes "
           sql += "WHERE emp_id IN ("
 
@@ -93,10 +93,10 @@ Procedure GetMailsWeb()
              else
 
                 if !(oQry:LastRec() == 0)
-                   envia_emails(oQry)
-                   upload_mail_events()
-                   upload_mail_errors()
-                   MsgStatus()
+                  send_emails(oQry)
+                  upload_mail_events()
+                  upload_mail_errors()
+                  MsgStatus()
                 end
 
              end

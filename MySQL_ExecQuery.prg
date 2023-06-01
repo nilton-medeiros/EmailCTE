@@ -35,7 +35,7 @@ Function ExecutaQuery( cSQL )
 
             oQuery := NIL
 
-            // Atrubui ID da conexão atual ao usuário ativo
+            // Atrubui ID da conexão atual ao usuário TMS.Client = id 3 (óbivo: comentário idiota, descobrir se o log no DB ainda está funcionando)
             cSQLx  := "UPDATE usuarios SET user_conect_id = CONNECTION_ID(), user_conected_em = NOW() WHERE user_id = 3;"
             oQuery := g_oServer:Query(cSQLx)
 

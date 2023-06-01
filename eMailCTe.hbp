@@ -1,7 +1,7 @@
 Main.Prg
 class_email.prg
 class_tms.prg
-envia_email.prg
+send_mails.prg
 funcoes.prg
 monitoraerros.Prg
 monitoramail.prg

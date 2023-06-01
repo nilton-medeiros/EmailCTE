@@ -192,7 +192,7 @@ Function DateToSQL(dDate)
          cResult := HB_ULEFT(cResult,4) + '-' + HB_USUBSTR(cResult,5,2) + '-' + HB_USUBSTR(cResult,7,2)
 Return (cResult)
 
-Procedure RegistraLog( cRegistra, lSaltarLinha, lEncrypt )
+Procedure registraLog( cRegistra, lSaltarLinha, lEncrypt )
           Local cLogMsg, nHandle
           Local cDate    := DTOC(Date())
           Local cFolder  := 'log'+hb_ps()
@@ -386,14 +386,20 @@ Function DelItemArray( aVelho, nItem )
 Return AClone( aTemp )
 
 Function is_true( xBoolean )
+   local result := false
 
-         if ValType( xBoolean ) == 'L'
-            Return ( xBoolean )
-         elseif ValType( xBoolean ) == 'N'
-            Return ( xBoolean > 0 )
-         end
+   switch ValType(xBoolean)
+      case 'L'
+         result := xBoolean
+         exit
+      case 'N'
+         result := (xBoolean > 0)
+         exit
+      case 'C'
+         result := !Empty(xBoolean)
+   endswitch
 
-Return (.F.)
+return result
 
 Function array_to_string(arrayOfString)
    local result := '', conteudo
@@ -420,3 +426,9 @@ Function array_to_string(arrayOfString)
       result := arrayOfString
    endif
 return LTrim(result)
+
+function ifNull(ver, _default)
+   if ValType(ver) == "U" .or. Empty(ver)
+      return default
+   endif
+return ver
