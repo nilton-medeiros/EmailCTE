@@ -19,7 +19,7 @@ method new(emails_string) class TEmailsList
     if !Empty(emails_string)
         emails_string := hb_utf8StrTran(emails_string, ",", ";")
         emails_string := hb_utf8StrTran(emails_string, " ")
-        emails_string := hmg_low(emails_string)
+        emails_string := hmg_lower(emails_string)
         ::emails := hb_ATokens(emails_string, ";")
     endif
 return self

@@ -1,7 +1,7 @@
 Main.Prg
 class_email.prg
+class_emailsList.prg
 class_tms.prg
-send_mails.prg
 funcoes.prg
 monitoraerros.Prg
 monitoramail.prg
@@ -10,4 +10,5 @@ MySQL_Desconect.prg
 MySQL_ExecQuery.prg
 Opcoes.Prg
 RegistraBD.Prg
+send_mails.prg
 UpLoadEvents.prg

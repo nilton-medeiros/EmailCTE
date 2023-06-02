@@ -17,7 +17,7 @@ procedure send_emails(ctes)
             "fone" => '',;
             "emailComercial" => '',;
             "emailContabil" => '',;
-            "portal" => '',;
+            "portal" => '';
           }
     local cTo := '', cc := {}, bcc := {}
 
@@ -258,7 +258,7 @@ procedure send_emails(ctes)
 
                 emails_string := hb_utf8StrTran(emitente["emailContabil"], ",", ";")
                 emails_string := hb_utf8StrTran(emails_string, " ")
-                emails_string := hmg_low(emails_string)
+                emails_string := hmg_lower(emails_string)
                 cc := hb_ATokens(emails_string, ";")
                 bcc := {}
                 cTo := cc[1]
@@ -368,32 +368,32 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
             case 'remetente'
                 destinatario["id"] := hb_ntos(remetente_id)
                 destinatario["enviar"] := is_true(remetente_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id)
                 exit
             case 'coleta'
                 destinatario["id"] := hb_ntos(coleta_id)
                 destinatario["enviar"] := is_true(coleta_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id)
                 exit
             case 'expedidor'
                 destinatario["id"] := hb_ntos(expedidor_id)
                 destinatario["enviar"] := is_true(expedidor_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id)
                 exit
             case 'recebedor'
                 destinatario["id"] := hb_ntos(recebedor_id)
                 destinatario["enviar"] := is_true(recebedor_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(destinatario_id) + '# ' + hb_ntos(entrega_id)
                 exit
             case 'destinatario'
                 destinatario["id"] := hb_ntos(destinatario_id)
                 destinatario["enviar"] := is_true(destinatario_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(entrega_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(entrega_id)
                 exit
             case 'entrega'
                 destinatario["id"] := hb_ntos(entrega_id)
                 destinatario["enviar"] := is_true(entrega_id)
-                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id))
+                contido := hb_ntos(tomador_id) + '# ' + hb_ntos(remetente_id) + '# ' + hb_ntos(coleta_id) + '# ' + hb_ntos(expedidor_id) + '# ' + hb_ntos(recebedor_id) + '# ' + hb_ntos(destinatario_id)
                 exit
         endswitch
 
@@ -447,7 +447,7 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
             ::temTomador := false
         endif
         idx := iif((idx == 0), 1, idx)
-        ::emailTo := ::email[idx]["email"])
+        ::emailTo := ::email[idx]["email"]
         hb_adel(::email, idx, true)
     endif
 
