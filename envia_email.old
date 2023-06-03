@@ -434,7 +434,7 @@ Procedure GetArrayEmails( _tomador_id, _remetente_id, _coleta_id, _expedidor_id,
              if oQuery:NetErr()
                 MsgStatus('Erro SQL', 'emailError')
                 PlayExclamation()
-                System.Clipboard := 'Erro SQL: ' + CRLF + oQuery:Error() + CRLF + 'Descrição do comando SQL: ' + CRLF + sql  // Debug
+                //System.Clipboard := 'Erro SQL: ' + CRLF + oQuery:Error() + CRLF + 'Descrição do comando SQL: ' + CRLF + sql  // Debug
                 MsgExclamation('Erro SQL: ' + CRLF + oQuery:Error(), 'eMailCTe: Carregando Contatos')
                 MsgExclamation('Ligue para o Suporte ou tente reiniciar o programa', 'eMailCTe: Erro de SQL')
                 oQuery:Destroy()

@@ -20,6 +20,7 @@ procedure send_emails(ctes)
             "portal" => '';
           }
     local cTo := '', cc := {}, bcc := {}
+    local hEmail, cMail
 
     registraLog('Iniciando envio de e-mails de ' + hb_ntos(ctes:LastRec()) + ' CTEs', SKIP_LINE)
 
@@ -66,7 +67,7 @@ procedure send_emails(ctes)
 
         foneFormatted := empresa:Fone
         len := hmg_len(hb_USubStr(foneFormatted, 4))
-        foneFormatted := "(" + hb_ULeft(foneFormatted, 2) + ") " + hb_USubStr(foneFormatted, 4, ten-4) + "-" + hb_URight(foneFormatted, 4)
+        foneFormatted := "(" + hb_ULeft(foneFormatted, 2) + ") " + hb_USubStr(foneFormatted, 4, len-4) + "-" + hb_URight(foneFormatted, 4)
 
         emitente["fone"] := foneFormatted
         emitente["nome"] := AllTrim(hb_ULeft(empresa:Nome, hb_utf8RAt('(', empresa:Nome) - 2))
@@ -129,13 +130,14 @@ procedure send_emails(ctes)
             LOOP
         end
 
-        MsgStatus('Preparando e-mail do CTe ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailEdit')
+        cte_numero := hb_ntos(cte:FieldGet("cte_numero"))
+
+        MsgStatus( 'Preparando e-mail do CTe ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailEdit')
 
         emails_comerciais := TEmailsList():new(emitente["emailComercial"])
-        cte_numero := hb_ntos(cte:FieldGet("cte_numero"))
         assunto := 'Conhecimento de Transporte Eletrônico  (CT-e) Nº ' + cte_numero + ' ** ' + AllTrim(cte:FieldGet('cte_situacao')) + ' **'
 
-        email:setLogin(empresa:smtp_email, empresa:smpt_login, empresa:senha, empresa:pass, emails_comerciais:getTo())
+        email:setLogin(empresa:smtp_email, empresa:smtp_login, empresa:smtp_senha, empresa:smtp_pass, emails_comerciais:getTo())
 
         if (empresa:Ambiente == 1)
             // Produção
@@ -245,7 +247,7 @@ procedure send_emails(ctes)
                AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail enviado com copia para ' + cMail})
             NEXT
             registraLog( 'e-Mail CTE '+ cte_numero + ' (' + empresa:sigla_cia + ') enviado com sucesso')
-            nTotEMail += nQtdEMail
+            total_emails += nQtdEMail
 
             if Empty(emitente["emailContabil"])
                 AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail da contabilidade do emitente nao cadastrado!'} )
@@ -285,7 +287,7 @@ procedure send_emails(ctes)
 
                     registraLog( 'e-Mail CTE '+ cte_numero + ' (' + empresa:sigla_cia + ') para contabilidade enviado com sucesso')
 
-                    nTotEMail += nQtdEMail
+                    total_emails += nQtdEMail
 
                  else
                     MsgStatus('Falha enviando e-mail CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailError' )
@@ -302,7 +304,7 @@ procedure send_emails(ctes)
            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'erro ao enviar e-mails!'})
            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + email:server + '| Porta: ' + hb_ntos(email:port) + CRLF + 'De: ' + email:login['From'] + CRLF + 'Para: ' + email:recipients['To'] + CRLF + 'Assunto: ' + email:msg['Subject']})
 
-           ip_externo := IP_EXTERNO()
+           ip_externo := IP_Externo()
 
            if !Empty(ip_externo)
               AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'IP Externo: ' + ip_externo})
@@ -328,7 +330,7 @@ procedure send_emails(ctes)
 
     next i
 
-    registraLog( 'Resumo das ' + start_time + ' às ' + Time() + ', foram enviados ' + hb_ntos(nTotEMail) + ' e-mails.', SKIP_LINE)
+    registraLog( 'Resumo das ' + start_time + ' às ' + Time() + ', foram enviados ' + hb_ntos(total_emails) + ' e-mails.', SKIP_LINE)
     MsgStatus()
 
     g_lStopExecution := .T.
@@ -442,13 +444,13 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
     ::emailTo := ''
 
     if ::is_email()
-        idx := hb_Ascan( ::email, {|h| h["clie_id"] == tomador_id})
+        idx := hb_Ascan( ::emails, {|h| h["clie_id"] == tomador_id})
         if (idx == 0)
             ::temTomador := false
         endif
         idx := iif((idx == 0), 1, idx)
-        ::emailTo := ::email[idx]["email"]
-        hb_adel(::email, idx, true)
+        ::emailTo := ::emails[idx]["email"]
+        hb_adel(::emails, idx, true)
     endif
 
 return self

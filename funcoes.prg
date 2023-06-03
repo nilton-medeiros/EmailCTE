@@ -204,9 +204,9 @@ Procedure registraLog( cRegistra, lSaltarLinha, lEncrypt )
           cRegistra := HB_UTF8STRTRAN( cRegistra, CRLF, CRLF + Space(20) )
 
           if lEncrypt
-            cRegistra := CharXor(cRegistra, "MyKeySendMail")
-          endif
-
+            cRegistra := "[ENCRYPT START =>]" + hb_eol() + CharXor(cRegistra, "MyKeySendMail") + hb_eol() + [<= ENCRYPT END]
+         endif
+          
 			 if hb_FileExists( cFolder+cLogFile )
              nHandle := fOpen( cFolder+cLogFile, FO_WRITE )
              fSeek( nHandle, 0, FS_END )
@@ -374,17 +374,6 @@ Function TirarAcentos(cTexto)
 
 Return (cTexto)
 
-Function DelItemArray( aVelho, nItem )
-         Local k, aTemp := {}
-
-         FOR k := 1 TO HMG_LEN( aVelho )
-             if !( k == nItem )
-                AAdd( aTemp, aVelho[k] )
-             end
-         NEXT k
-
-Return AClone( aTemp )
-
 Function is_true( xBoolean )
    local result := false
 
@@ -402,9 +391,13 @@ Function is_true( xBoolean )
 return result
 
 Function array_to_string(arrayOfString)
-   local result := '', conteudo
-   if ValType(arrayOfString) == "A" .and. Len(arrayOfString) > 0
+   local conteudo
+   local result := ''
+
+   if ValType(arrayOfString) == "A" .and. hmg_len(arrayOfString) > 0
+
       for each conteudo in arrayOfString
+
          switch ValType(conteudo)
             case "C"
                exit
@@ -420,11 +413,15 @@ Function array_to_string(arrayOfString)
             otherwise
                conteudo := 'Tipo do conteúdo do array não é string. Tipo: "' + ValType(conteudo) + '"'
          endswitch
+
          result += ' | ' + conteudo
+
       next
+
    elseif ValType(arrayOfString) == "C"
       result := arrayOfString
    endif
+   
 return LTrim(result)
 
 function ifNull(ver, _default)
