@@ -204,7 +204,7 @@ Procedure registraLog( cRegistra, lSaltarLinha, lEncrypt )
           cRegistra := HB_UTF8STRTRAN( cRegistra, CRLF, CRLF + Space(20) )
 
           if lEncrypt
-            cRegistra := "[ENCRYPT START =>]" + hb_eol() + CharXor(cRegistra, "MyKeySendMail") + hb_eol() + [<= ENCRYPT END]
+            cRegistra := "[ENCRYPT START =>]" + hb_eol() + auxEncrypt(cRegistra) + hb_eol() + [<= ENCRYPT END]
          endif
           
 			 if hb_FileExists( cFolder+cLogFile )
@@ -278,117 +278,6 @@ FUNCTION ReadPage_ler( cUrl )
          END SEQUENCE
 
 RETURN cRes
-
-Function mysql_escape(_string)
-         _string := AllTrim(_string)
-         _string := mysql_escape_string(_string)
-Return TirarAcentos(_string)
-
-Function TirarAcentos(cTexto)
-
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ã", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Á", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "À", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Â", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ã", "a")
-         cTexto := HB_UTF8STRTRAN(cTexto, "á", "a")
-         cTexto := HB_UTF8STRTRAN(cTexto, "à", "a")
-         cTexto := HB_UTF8STRTRAN(cTexto, "â", "a")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ä", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ä", "a")
-         cTexto := HB_UTF8STRTRAN(cTexto, "É", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "È", "E")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ê", "E")
-         cTexto := HB_UTF8STRTRAN(cTexto, "é", "E")
-         cTexto := HB_UTF8STRTRAN(cTexto, "è", "e")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ê", "e")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ë", "E")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ë", "e")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Í", "I")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ì", "I")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Î", "I")
-         cTexto := HB_UTF8STRTRAN(cTexto, "í", "i")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ì", "i")
-         cTexto := HB_UTF8STRTRAN(cTexto, "î", "i")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ï", "I")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ï", "i")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Õ", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ó", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ò", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ô", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "õ", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ó", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ò", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ô", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ö", "O")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ö", "o")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ú", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ù", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Û", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ú", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ù", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "û", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ü", "U")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ü", "u")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ý", "Y")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ý", "y")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ÿ", "y")
-         cTexto := HB_UTF8STRTRAN(cTexto, "Ç", "C")
-         cTexto := HB_UTF8STRTRAN(cTexto, "ç", "c")
-         cTexto := HB_UTF8STRTRAN(cTexto, "º", "o.")
-         cTexto := HB_UTF8STRTRAN(cTexto, "", "A")
-         cTexto := HB_UTF8STRTRAN(cTexto, "", "a")
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(173), "i" ) // i acentuado minusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(135), "C" ) // c cedilha maiusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(141), "I" ) // i acentuado maiusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(163), "a" ) // a acentuado minusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(167), "c" ) // c acentuado minusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(161), "a" ) // a acentuado minusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(131), "A" ) // a acentuado maiusculo
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(194) + Chr(186), "o." ) // numero simbolo
-         // so pra corrigir no MySql
-         cTexto := HB_UTF8STRTRAN( cTexto, "+" + Chr(129), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "+" + Chr(137), "E" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "+" + Chr(131), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "+" + Chr(135), "C" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(167), "c" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(163), "a" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(173), "i" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(131), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(161), "a" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(141), "I" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(135), "C" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(156), "a" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(159), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(129), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(137), "E" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + "?", "C" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(149), "O" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(154), "U" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "+" + Chr(170), "o" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "?" + Chr(128), "A" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(195) + Chr(166), "e" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(135) + Chr(227), "ca" )
-         cTexto := HB_UTF8STRTRAN( cTexto, "n" + Chr(227), "na" )
-         cTexto := HB_UTF8STRTRAN( cTexto, Chr(162), "o" )
-
-Return (cTexto)
-
-Function is_true( xBoolean )
-   local result := false
-
-   switch ValType(xBoolean)
-      case 'L'
-         result := xBoolean
-         exit
-      case 'N'
-         result := (xBoolean > 0)
-         exit
-      case 'C'
-         result := !Empty(xBoolean)
-   endswitch
-
-return result
 
 Function array_to_string(arrayOfString)
    local conteudo
