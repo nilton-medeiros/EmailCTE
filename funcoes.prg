@@ -204,9 +204,9 @@ Procedure registraLog( cRegistra, lSaltarLinha, lEncrypt )
           cRegistra := HB_UTF8STRTRAN( cRegistra, CRLF, CRLF + Space(20) )
 
           if lEncrypt
-            cRegistra := "[ENCRYPT START =>]" + hb_eol() + auxEncrypt(cRegistra) + hb_eol() + [<= ENCRYPT END]
+            cRegistra := "[ENCRYPT START =>]" + hb_eol() + auxEncrypt(cRegistra) + hb_eol() + "[<= ENCRYPT END]"
          endif
-          
+
 			 if hb_FileExists( cFolder+cLogFile )
              nHandle := fOpen( cFolder+cLogFile, FO_WRITE )
              fSeek( nHandle, 0, FS_END )
@@ -310,7 +310,7 @@ Function array_to_string(arrayOfString)
    elseif ValType(arrayOfString) == "C"
       result := arrayOfString
    endif
-   
+
 return LTrim(result)
 
 function ifNull(ver, _default)
