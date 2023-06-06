@@ -24,7 +24,7 @@ Function ConectaMySQL()
 
             if (MemVar->g_oServer == NIL) .or. MemVar->g_oServer:NetErr()
                if !(MemVar->g_oServer == NIL)
-                  RegistraLog( 'Sem conexão com a internet; Erro de autenticação servidor MySQL (' + g_oHostConect:Name + '): ' + g_oServer:Error() )
+                  RegistraLog( 'Sem conexão com a internet. Erro de autenticação servidor MySQL (' + g_oHostConect:Name + '): ' + g_oServer:Error() )
                end
                PlayAsterisk()
                //MsgStop('Erro de conexão com servidor MySQL:' + CRLF + MemVar->g_oServer:Error(), 'Servidor: ' + g_oHostConect:Name)
