@@ -44,13 +44,12 @@ CREATE CLASS InfoEmpresa
      VAR email_CCO       INIT ''
 
      VAR pathShared INIT ''
-     VAR xml_FolderDown  INIT ''
-     VAR pdf_FolderDown  INIT ''
+     VAR cte_path  INIT ''
 
      METHOD Adds()
      METHOD Clean()
      METHOD QtdeEmpresas()
-     METHOD SetFolders() SETGET
+     METHOD SetFolders(n) SETGET
      METHOD SetEmpresa() SETGET
      METHOD SetByID() SETGET
 
@@ -91,15 +90,14 @@ METHOD Clean() CLASS InfoEmpresa
      ::email_CCO       := ''
 
      ::pathShared := ''
-     ::xml_FolderDown  := ''
-     ::pdf_FolderDown  := ''
+     ::cte_path  := ''
 
 RETURN SELF
 
 METHOD QtdeEmpresas() CLASS InfoEmpresa
 RETURN HMG_LEN( ::Empresa )
 
-METHOD SetFolders( n ) CLASS InfoEmpresa
+METHOD SetFolders(n) CLASS InfoEmpresa
        Local nLen := HMG_LEN(::Empresa)
 
        if !( ValType(n) == 'N' ) .OR. ( n < 1 ) .OR. ( n > nLen )
@@ -135,8 +133,7 @@ METHOD SetFolders( n ) CLASS InfoEmpresa
           ::email_CCO       := ''
 
           ::pathShared  := ''
-          ::xml_FolderDown  := ''
-          ::pdf_FolderDown  := ''
+          ::cte_path  := ''
 
        else
 
@@ -170,23 +167,11 @@ METHOD SetFolders( n ) CLASS InfoEmpresa
           ::smtp_autentica  := ::Empresa[n]:FieldGet('emp_smtp_autentica')
           ::email_CCO       := ::Empresa[n]:FieldGet('emp_email_CCO')
 
-          // ..\ctes_baixados\xml\"cnpjEmititente"\"aaaammCTe"\CTe\
-          // ..\ctes_baixados\xml\"cnpjEmititente"\"aaaammCTe"\MDFe\
+          ::pathShared := RegistryRead('HKEY_CURRENT_USER\SOFTWARE\Sistrom\DFeMonitor\InstallPath\dfePath')
+          ::cte_path := ::pathShared + ::Empresa[::nPos]:FieldGet('emp_cnpj') + "\CTe\"
 
-          ::pathShared := RegistryRead('HKEY_CURRENT_USER\SOFTWARE\Sistrom\CTeMonitor\InstallPath\sharedPath')
-          ::xml_FolderDown := ::pathShared + 'xml\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
-          ::pdf_FolderDown := ::pathShared + 'pdf\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
-
-          if !hb_DirExists( ::pathShared )
-            hb_DirBuild( ::pathShared )
-          end
-
-          if !hb_DirExists( ::xml_FolderDown )
-            hb_DirBuild( ::xml_FolderDown )
-          end
-
-          if !hb_DirExists( ::pdf_FolderDown )
-            hb_DirBuild( ::pdf_FolderDown )
+          if !hb_DirExists( ::cte_path )
+            hb_DirBuild( ::cte_path )
           end
 
        end
@@ -228,8 +213,7 @@ METHOD SetEmpresa( n ) CLASS InfoEmpresa
           ::smtp_autentica  := 0
           ::email_CCO       := ''
 
-          ::xml_FolderDown  := ''
-          ::pdf_FolderDown  := ''
+          ::cte_path  := ''
 
        else
 
@@ -258,8 +242,7 @@ METHOD SetEmpresa( n ) CLASS InfoEmpresa
           ::smtp_autentica  := ::Empresa[n]:FieldGet('emp_smtp_autentica')
           ::email_CCO       := ::Empresa[n]:FieldGet('emp_email_CCO')
 
-          ::xml_FolderDown := ::pathShared + 'xml\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
-          ::pdf_FolderDown := ::pathShared + 'pdf\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
+          ::cte_path := ::pathShared + ::Empresa[n]:FieldGet('emp_cnpj') + "\CTe\"
 
        end
 
@@ -298,8 +281,7 @@ METHOD SetByID( nId ) CLASS InfoEmpresa
           ::email_CCO       := ''
 
           ::pathShared := ''
-          ::xml_FolderDown  := ''
-          ::pdf_FolderDown  := ''
+          ::cte_path  := ''
 
        else
 
@@ -327,8 +309,7 @@ METHOD SetByID( nId ) CLASS InfoEmpresa
           ::smtp_autentica  := ::Empresa[::nPos]:FieldGet('emp_smtp_autentica')
           ::email_CCO       := ::Empresa[::nPos]:FieldGet('emp_email_CCO')
 
-          ::xml_FolderDown := ::pathShared + 'xml\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
-          ::pdf_FolderDown := ::pathShared + 'pdf\' + ::Empresa[::nPos]:FieldGet('emp_cnpj') + '\'
+          ::cte_path := ::pathShared + ::Empresa[::nPos]:FieldGet('emp_cnpj') + "\CTe\"
 
        end
 

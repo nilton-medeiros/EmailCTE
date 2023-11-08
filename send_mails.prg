@@ -10,7 +10,7 @@
 procedure send_emails(ctes)
     local email, emails_comerciais, envios, cte, empresa := g_oEmpresas
     local len, emp_id, nQtdEmail, nMaxMail := 9, total_emails := 0
-    local foneFormatted, path, cte_numero, assunto, start_time
+    local foneFormatted, ctePath, cte_numero, assunto, start_time
     local pdf_Link, pdf_file, xml_Link, xml_File, ip_externo, emails_string
     local emitente := {;
             "nome" => '',;
@@ -87,42 +87,39 @@ procedure send_emails(ctes)
         endif
 
         //https://www.<site>.com.br/<agente>/mod/conhecimentos/ctes/files/35200557296543000115570010000310181000310830-cte.pdf
+
+        ctePath := empresa:cte_path + '20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + "\"
         pdf_file := Token(pdf_Link, '/')
-        path := empresa:pdf_FolderDown + '20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + '\CTe\'
 
-        if !hb_FileExists(path + pdf_file)
-            path := 'C:\ACBrMonitorPLUS\PDF\' + SubStr(cte:FieldGet('cte_chave'), 7, 14) + '\20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + '\CTe\'
+        if !hb_FileExists(ctePath + pdf_file)
+            ctePath := RegistryRead("HKEY_CURRENT_USER\SOFTWARE\Sistrom\SendToPrinter\InstallPath")
+            if !Empty(ctePath)
+                ctePath += "printed\"
+            endif
         endif
-
-        pdf_file := path + pdf_file
 
         email := Tsmtp_email():new(empresa:smtp_servidor, empresa:smtp_porta, hb_FileExists('trace_email.txt'))
 
-        if hb_FileExists(pdf_file)
+        if hb_FileExists(ctePath + pdf_file)
             MsgStatus('Anexando PDF...' + hb_eol() + pdf_file, 'emailAttach')
-            email:attachFile(pdf_file)
+            email:attachFile(ctePath + pdf_file)
         else
             AAdd(g_aMaiComErros, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Arquivo PDF não encontrado no servidor local!'})
             MsgStatus('Arquivo PDF não encontrado!' + hb_eol() + pdf_file, 'emailError' )
-            registraLog('Arquivo ' + pdf_file + ' não encontrado')
+            registraLog('Arquivo ' + ctePath + pdf_file + ' não encontrado')
         end
 
-        //https://www.<site>/<agente>/mod/conhecimentos/ctes/files/35170305197756000196570010000521271000005618.xml
-        xml_File := Token(xml_Link, '/')
-        path := empresa:xml_FolderDown + '20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + iif(AllTrim(cte:FieldGet('cte_situacao')) == 'CANCELADO', '\Evento\Cancelamento\', '\CTe\')
+        //https://www.<site>/<agente>/mod/conhecimentos/ctes/files/35230857296543000115570010000441261000631947-cte.xml
 
-        if !hb_FileExists(path + xml_File)
-            path := 'C:\ACBrMonitorPLUS\DFes\' + SubStr(cte:FieldGet('cte_chave'), 7, 14) + '\20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + iif(AllTrim(cte:FieldGet('cte_situacao')) == 'CANCELADO', '\Evento\Cancelamento\', '\CTe\')
-        endif
-        xml_File := path + xml_File
+        xml_File := Token(xml_Link, '/')    // 35230857296543000115570010000441261000631947-cte.xml
 
-        if hb_FileExists(xml_File)
+        if hb_FileExists(ctePath + xml_File)
             MsgStatus('Anexando XML...' + hb_eol() + xml_File, 'emailLink' )
-            email:attachFile(xml_File)
+            email:attachFile(ctePath + xml_File)
         else
             AAdd(g_aMaiComErros, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Arquivo XML não encontrado no servidor local!'})
             MsgStatus('Arquivo XML não encontrado!' + hb_eol() + xml_File, 'emailError' )
-            registraLog('Arquivo ' + xml_File + ' não encontrado')
+            registraLog('Arquivo ' + ctePath + xml_File + ' não encontrado')
         end
 
         if email:is_not_attached()
