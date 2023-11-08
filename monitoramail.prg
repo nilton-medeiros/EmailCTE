@@ -4,7 +4,7 @@ DECLARE WINDOW Main
 DECLARE WINDOW Opcoes
 
 Procedure MonitoraMails()
-          Local nSegundos := RegistryRead( g_cRegPath + 'Monitorar\frequencia' ) * 60
+          Local nSegundos := RegistryRead( g_cRegPath + 'Monitoring\frequencia' ) * 60
 
           if IsWIndowActive(Opcoes)
              Return

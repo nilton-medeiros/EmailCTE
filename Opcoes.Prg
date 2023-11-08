@@ -17,9 +17,9 @@ Procedure opcoes_salvar()
 
           if ( AllTrim(Opcoes.Text_senha.Value) == g_aUsuarios[Opcoes.Combo_usuarios.Value]['senha'] )
 
-             RegistryWrite( g_cRegPath + "Monitorar\das", Opcoes.Text_das.Value )
-             RegistryWrite( g_cRegPath + "Monitorar\ate", Opcoes.Text_as.Value )
-             RegistryWrite( g_cRegPath + "Monitorar\frequencia", Opcoes.Text_frequencia.Value )
+             RegistryWrite( g_cRegPath + "Monitoring\das", Opcoes.Text_das.Value )
+             RegistryWrite( g_cRegPath + "Monitoring\ate", Opcoes.Text_as.Value )
+             RegistryWrite( g_cRegPath + "Monitoring\frequencia", Opcoes.Text_frequencia.Value )
 
              Opcoes.Release
 
@@ -50,9 +50,9 @@ Procedure opcoes_form_oninit()
 
           if !( g_oEmpresas:QtdeEmpresas() == 0 )
              Opcoes.Button_opcoes_salvar.Enabled := .T.
-             Opcoes.Text_das.Value   := RegistryRead( g_cRegPath + 'Monitorar\das' )
-             Opcoes.Text_as.Value    := RegistryRead( g_cRegPath + 'Monitorar\ate' )
-             Opcoes.Text_frequencia.Value := RegistryRead( g_cRegPath + 'Monitorar\frequencia' )
+             Opcoes.Text_das.Value   := RegistryRead( g_cRegPath + 'Monitoring\das' )
+             Opcoes.Text_as.Value    := RegistryRead( g_cRegPath + 'Monitoring\ate' )
+             Opcoes.Text_frequencia.Value := RegistryRead( g_cRegPath + 'Monitoring\frequencia' )
              MsgStatus( LTrim(Str(g_oEmpresas:QtdeEmpresas())) + if(g_oEmpresas:QtdeEmpresas() > 1, ' registros carregados.', ' registro carregado.') )
           else
              Opcoes.Button_opcoes_salvar.Enabled := .F.
