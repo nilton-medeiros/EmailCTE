@@ -442,9 +442,7 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
 
     if ::is_email()
         idx := hb_Ascan( ::emails, {|h| h["clie_id"] == tomador_id})
-        if (idx == 0)
-            ::temTomador := false
-        endif
+        ::temTomador := !(idx == 0)
         idx := iif((idx == 0), 1, idx)
         ::emailTo := ::emails[idx]["email"]
         hb_adel(::emails, idx, true)
