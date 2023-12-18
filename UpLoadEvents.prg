@@ -30,7 +30,7 @@ Procedure upload_mail_events()
               evts_sql += LTrim(STR(hMail['cte_id'])) + ", "                              // cte_id
               evts_sql += "'eMailCTE', "                                                  // cte_ev_protocolo
               evts_sql += "'" + DateToSQL(hMail['data']) + " " + hMail['hora'] + "', "    // cte_ev_data_hora
-              evts_sql += "'N/A', "                                                       // cte_ev_evento
+              evts_sql += "'EMAI', "                                                       // cte_ev_evento
               evts_sql += "'ENVIO DE e-MAILs: " + mysql_escape( hMail['mensagem'] ) + "')"    // cte_ev_detalhe e fechamento dos VALUES
 
           NEXT EACH
@@ -132,7 +132,7 @@ Procedure upload_mail_errors()
               evts_sql += LTrim(STR(hMail['cte_id'])) + ", "                           // cte_id
               evts_sql += "'eMailCTE', "                                               // cte_ev_protocolo
               evts_sql += "'" + DateToSQL(hMail['data']) + " " + hMail['hora'] + "', " // cte_ev_data_hora
-              evts_sql += "'N/A', "                                                    // cte_ev_evento
+              evts_sql += "'EMAI', "                                                    // cte_ev_evento
               evts_sql += "'SENT e-MAILs: " + mysql_escape( hMail['mensagem'] ) + "')" // cte_ev_detalhe e fechamento dos VALUES
 
           NEXT EACH
