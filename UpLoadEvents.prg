@@ -63,7 +63,7 @@ Procedure upload_mail_events()
                 MsgStop('Solicitação SQL ao Servidor foi perdida' + CRLF + "COMANDO SQL: " + CRLF + mail_sql, 'eMailCTe: Atualizando Base de dados')
                 RELEASE WINDOW ALL
              end
-             RegistraLog('UPDATE SQL: ' + mail_sql,, true )
+             RegistraLog('UPDATE SQL: ' + mail_sql )
           else
             RegistraLog('Array g_aMaiLogEvent retornou vazio!')
           end
@@ -92,7 +92,7 @@ Procedure upload_mail_events()
                MsgStop('Solicitação SQL ao Servidor foi perdida' + CRLF + "COMANDO SQL: " + CRLF + evts_sql, 'eMailCTe: Atualizando Base de dados')
                RELEASE WINDOW ALL
             end
-            RegistraLog('INSERT SQL: ' + evts_sql,, true )
+            RegistraLog('INSERT SQL: ' + evts_sql )
           else
             RegistraLog('Array g_aMaiLogEvent retornou vazio!')
           endif

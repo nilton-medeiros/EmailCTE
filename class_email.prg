@@ -17,7 +17,6 @@ create class Tsmtp_email
    data recipients readonly
    data subject readonly
    data body readonly
-   data msg readonly
    data attachment
    data login readonly
    data popServer readonly
@@ -48,7 +47,6 @@ method new(server, port, trace) class Tsmtp_email
    default trace := false
    ::server := server
    ::port := port
-   ::msg := {'Subject' => '', 'Body' => ''}
    ::attachment := {}
    ::login := {'From' => '', 'User' => '', 'Pass' => '', 'ReplyTo' => nil, 'SMTPPass' => ''}
    ::popServer := ''
@@ -80,7 +78,7 @@ method prepare(content) class Tsmtp_email
    ::body += 'ENVIO DE CT-e' + hb_eol() + hb_eol() + hb_eol()
    ::body += 'Esta empresa não envia SPAM! Este é um e-mail obrigatório por lei.' + hb_eol() + hb_eol()
    ::body += 'Voce esta recebendo um Conhecimento de Transporte Eletrônico de ' + content['nomeRemetente'] + '.' + hb_eol()
-   ::body += 'Caso nao queira receber este e-mail, favor entrar em contato pelo e-mail comercial ' + ::recipients['To'] + '.' + hb_eol() + hb_eol()
+   ::body += 'Caso nao queira receber este e-mail, favor entrar em contato pelo e-mail comercial ' + ::login['ReplyTo'] + '.' + hb_eol() + hb_eol()
    ::body += 'O arquivo XML do CT-e encontra-se anexado a este e-mail.' + hb_eol()
    ::body += 'Para verificar a autorização do CT-e junto a SEFAZ, acesse o Portal de consulta através do endereço: https://www.cte.fazenda.gov.br.' + hb_eol() + hb_eol()
    ::body += 'No campo "Chave de acesso", inclua a numeração da chave de acesso abaixo (sem o literal "CTe") e complete a consulta com as informações solicitadas pelo Portal.' + hb_eol() + hb_eol() + hb_eol()
@@ -88,7 +86,7 @@ method prepare(content) class Tsmtp_email
    ::body += 'Atenciosamente,' + hb_eol() + hb_eol()
    ::body += content['nomeRemetente'] + hb_eol()
    ::body += content['foneRemetente'] + hb_eol()
-   ::body += ::recipients['To'] + hb_eol() + hb_eol()
+   ::body += ::login['ReplyTo'] + hb_eol() + hb_eol()
    ::body += 'TMS Expresso.Cloud' + hb_eol()
 
    if !Empty(content['portal'])
@@ -98,7 +96,6 @@ method prepare(content) class Tsmtp_email
 
    ::body +=  hb_eol() + hb_eol() + '*** Esse é um e-mail automático. Não é necessário respondê-lo ***' + hb_eol()
    ::body += '</body>' + hb_eol() + '</html>'
-
 return nil
 
 method cc_as_string() class Tsmtp_email
@@ -127,8 +124,8 @@ method sendmail() class Tsmtp_email
       log += 'To: ' + ::recipients['To'] + hb_eol()
       log += 'Cc: ' + array_to_string(::recipients['Cc']) + hb_eol()
       log += 'Bcc: ' + array_to_string(::recipients['Bcc']) + hb_eol()
-      log += 'Body: ' + ::msg['Body'] + hb_eol()
-      log += 'Subject ' + ::msg['Subject'] + hb_eol()
+      log += 'Body: ' + ::body + hb_eol()
+      log += 'Subject ' + ::subject + hb_eol()
       log += 'Attachment: ' + array_to_string(::attachment) + hb_eol()
       log += 'User: ' + ::login['User'] + hb_eol()
       log += 'Pass: *********' + hb_eol()
@@ -138,7 +135,7 @@ method sendmail() class Tsmtp_email
       log += 'ReplyTo: ' + iif(ValType(::login['ReplyTo']) == "C", ::login['ReplyTo'], '') + hb_eol()
       log += 'TLS: ' + iif(::isTLS, 'true', 'false') + hb_eol()
       log += 'SMTPPass: *******' + hb_eol()
-      RegistraLog(log, true)
+      RegistraLog(hb_eol()+log, true)
    endif
 return hb_SendMail( ::server,;
                     ::port,;
@@ -146,8 +143,8 @@ return hb_SendMail( ::server,;
                     ::recipients['To'],;  // string email To
                     ::recipients['Cc'],;  // array emails CC
                     ::recipients['Bcc'],; // array emails BCC
-                    ::msg['Body'],;
-                    ::msg['Subject'],;
+                    ::body,;
+                    ::subject,;
                     ::attachment,;
                     ::login['User'],;
                     ::login['Pass'],;
@@ -173,5 +170,4 @@ method destroy() class Tsmtp_email
    ::recipients := nil
    ::attachment := nil
    ::login := nil
-   ::msg := nil
 return self

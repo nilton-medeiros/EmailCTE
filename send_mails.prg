@@ -8,7 +8,7 @@
 #define ENCRYPTED .T.
 
 procedure send_emails(ctes)
-    local email, emails_comerciais, envios, cte, empresa := g_oEmpresas
+    local oEmail, emails_comerciais, envios, cte, empresa := g_oEmpresas, prepare
     local len, emp_id, nQtdEmail, nMaxMail := 9, total_emails := 0
     local foneFormatted, ctePath, cte_numero, assunto, start_time
     local pdf_Link, pdf_file, xml_Link, xml_File, ip_externo, emails_string
@@ -98,11 +98,11 @@ procedure send_emails(ctes)
             endif
         endif
 
-        email := Tsmtp_email():new(empresa:smtp_servidor, empresa:smtp_porta, hb_FileExists('trace_email.txt'))
+        oEmail := Tsmtp_email():new(empresa:smtp_servidor, empresa:smtp_porta, hb_FileExists('trace_email.txt'))
 
         if hb_FileExists(ctePath + pdf_file)
             MsgStatus('Anexando PDF...' + hb_eol() + pdf_file, 'emailAttach')
-            email:attachFile(ctePath + pdf_file)
+            oEmail:attachFile(ctePath + pdf_file)
         else
             AAdd(g_aMaiComErros, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Arquivo PDF não encontrado no servidor local!'})
             MsgStatus('Arquivo PDF não encontrado!' + hb_eol() + pdf_file, 'emailError' )
@@ -115,14 +115,14 @@ procedure send_emails(ctes)
 
         if hb_FileExists(ctePath + xml_File)
             MsgStatus('Anexando XML...' + hb_eol() + xml_File, 'emailLink' )
-            email:attachFile(ctePath + xml_File)
+            oEmail:attachFile(ctePath + xml_File)
         else
             AAdd(g_aMaiComErros, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Arquivo XML não encontrado no servidor local!'})
             MsgStatus('Arquivo XML não encontrado!' + hb_eol() + xml_File, 'emailError' )
             registraLog('Arquivo ' + ctePath + xml_File + ' não encontrado')
         end
 
-        if email:is_not_attached()
+        if oEmail:is_not_attached()
             MsgStatus('Arquivos PDF/XML não encontrados para anexar', 'emailError' )
             LOOP
         end
@@ -134,7 +134,7 @@ procedure send_emails(ctes)
         emails_comerciais := TEmailsList():new(emitente["emailComercial"])
         assunto := 'Conhecimento de Transporte Eletrônico  (CT-e) Nº ' + cte_numero + ' ** ' + AllTrim(cte:FieldGet('cte_situacao')) + ' **'
 
-        email:setLogin(empresa:smtp_email, empresa:smtp_login, empresa:smtp_senha, empresa:smtp_pass, emails_comerciais:getTo())
+        oEmail:setLogin(empresa:smtp_email, empresa:smtp_login, empresa:smtp_senha, empresa:smtp_pass, emails_comerciais:getTo())
 
         if (empresa:Ambiente == 1)
             // Produção
@@ -178,29 +178,29 @@ procedure send_emails(ctes)
 
                 if is_true(empresa:email_CCO)
                     // Enviar com cópia oculta
-                    for each email in emails_comerciais:emails
-                        AAdd(bcc, email)
+                    for each cMail in emails_comerciais:emails
+                        AAdd(bcc, cMail)
                     next
                     for each hEmail in envios:emails
                         AAdd(bcc, hEmail["email"])
                     next
                 else
                     // Enviar com cópia normal
-                    for each email in emails_comerciais:emails
-                        AAdd(cc, email)
+                    for each cMail in emails_comerciais:emails
+                        AAdd(cc, cMail)
                     next
                     for each hEmail in envios:emails
                         AAdd(cc, hEmail["email"])
                     next
                 endif
                 envios:destroy()
-                email:setRecipients(cTo, cc, bcc)
 
             else
                 // Nao envia e-mail para clientes, CT-e apenas para acompanhar carga entre filiais do emitente
                 AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'CT-e apenas para acompanhar carga do Emitente, nao enviado e-mails aos clientes!'} )
-                email:setRecipients(cTo, cc, bcc)
             endif
+
+            oEmail:setRecipients(cTo, cc, bcc)
 
         else
             // Homologação
@@ -209,32 +209,32 @@ procedure send_emails(ctes)
 
             /* Verifica se é para enviar com cópia oculta */
             if is_true(empresa:email_CCO)
-                email:setRecipients(cTo, {}, {'suporte@sistrom.com.br'})
+                oEmail:setRecipients(cTo, {}, {'suporte@sistrom.com.br'})
             else
-                email:setRecipients(emails_comerciais:getTo(), {'suporte@sistrom.com.br'}, {})
+                oEmail:setRecipients(emails_comerciais:getTo(), {'suporte@sistrom.com.br'}, {})
             end
         endif
 
         MsgStatus('Enviando e-mail CTE '+ cte_numero + ' (' + empresa:sigla_cia + ')', 'emailOpen' )
 
-        email:prepare(;
-            {;
-                "assunto" => assunto,;
-                "cteChave" => cte:FieldGet('cte_chave'),;
-                "nomeRemetente" => emitente['nome'],;
-                "foneRemetente" => emitente['fone'],;
-                "portal" => emitente['portal'];
-            })
+        prepare := {=>}
+        prepare["assunto"] := assunto
+        prepare["cteChave"] := cte:FieldGet('cte_chave')
+        prepare["nomeRemetente"] := emitente['nome']
+        prepare["foneRemetente"] := emitente['fone']
+        prepare["portal"] := emitente['portal']
+
+        oEmail:prepare(prepare)
 
         nQtdEmail := hmg_len(cc) + hmg_len(bcc) + 1
 
         MsgStatus('Enviando e-mails do CTE ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailSend' )
-        registraLog( 'Enviando e-mail CTE '+ cte_numero + ' (' + empresa:sigla_cia + ') | CC: ' + email:cc_as_string() + ' | BCC: ' + email:bcc_as_string() + ' | nQtdEMail: ' + hb_ntos(nQtdEMail))
+        registraLog( 'Enviando e-mail CTE '+ cte_numero + ' (' + empresa:sigla_cia + ') | CC: ' + oEmail:cc_as_string() + ' | BCC: ' + oEmail:bcc_as_string() + ' | nQtdEMail: ' + hb_ntos(nQtdEMail))
 
-        if email:sendmail()
+        if oEmail:sendmail()
 
             // Adiciona ao log de enventos para insert na tabela ctes_eventos
-            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail enviado para ' + email:recipients['To']})
+            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail enviado para ' + oEmail:recipients['To']})
 
             FOR EACH cMail IN cc
                AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail enviado com copia para ' + cMail})
@@ -253,7 +253,7 @@ procedure send_emails(ctes)
                 // Enviar emails para Contabilidade/Contadores somente o XML em um email separado
                 MsgStatus('Enviando e-mail contabilidade', 'emailEdit' )
 
-                email:reset()
+                oEmail:reset()
 
                 emails_string := hb_utf8StrTran(emitente["emailContabil"], ",", ";")
                 emails_string := hb_utf8StrTran(emails_string, " ")
@@ -263,10 +263,10 @@ procedure send_emails(ctes)
                 cTo := cc[1]
                 hb_adel(cc, 1, true)
 
-                email:setRecipients(cTo, cc, bcc)
+                oEmail:setRecipients(cTo, cc, bcc)
 
                 MsgStatus('Anexando XML...', 'emailAttach' )
-                email:attachFile(xml_File)
+                oEmail:attachFile(ctePath + xml_File)
 
                 // Controla a qtde de email enviado no dia, caso execeda a 50 emails no dia, alterna para o segundo servidor de e-Mail
                 nQtdEMail := HMG_LEN(cc) + 1
@@ -274,7 +274,7 @@ procedure send_emails(ctes)
                 MsgStatus('Enviando e-mail contabilidade', 'emailSend' )
                 registraLog( 'Enviando e-mail para contabilidade ' + emails_string + ' | CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')')
 
-                if email:sendmail()
+                if oEmail:sendmail()
 
                     AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'e-mail enviado para ' + cTo})
 
@@ -289,7 +289,7 @@ procedure send_emails(ctes)
                  else
                     MsgStatus('Falha enviando e-mail CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailError' )
                     AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'erro ao enviar e-mail para contador!'} )
-                    AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + email:server + '| Porta: ' + hb_ntos(email:port) + CRLF + 'De: ' + email:login['From'] + CRLF + 'Para: ' + email:recipients['To'] + CRLF + 'Assunto: ' + email:msg['Subject']})
+                    AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:msg['Subject']})
                 endif
 
            endif
@@ -299,7 +299,7 @@ procedure send_emails(ctes)
            MsgStatus('Falha enviando e-mail CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailError' )
 
            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'erro ao enviar e-mails!'})
-           AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + email:server + '| Porta: ' + hb_ntos(email:port) + CRLF + 'De: ' + email:login['From'] + CRLF + 'Para: ' + email:recipients['To'] + CRLF + 'Assunto: ' + email:msg['Subject']})
+           AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:msg['Subject']})
 
            ip_externo := IP_Externo()
 
@@ -307,7 +307,7 @@ procedure send_emails(ctes)
               AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'IP Externo: ' + ip_externo})
            end
 
-           registraLog( 'Email não enviado! Server: ' + email:server + '| Porta: ' + hb_ntos(email:port) + ' | De: ' + email:login['From'] + ' | Para: ' + email:recipients['To'] + ' | Assunto: ' + email:msg['Subject'] )
+           registraLog( 'Email não enviado! Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + ' | De: ' + oEmail:login['From'] + ' | Para: ' + oEmail:recipients['To'] + ' | Assunto: ' + oEmail:msg['Subject'] )
 
         endif
 
@@ -322,8 +322,8 @@ procedure send_emails(ctes)
         SysWait(5, .T.)   // Pausa de 5 segundos entre cada envio de emails.
         emails_comerciais:destroy()
         emails_comerciais := nil
-        email:destroy()
-        email := nil     // Destroi objeto anterior, estamos em um loop do For
+        oEmail:destroy()
+        oEmail := nil     // Destroi objeto anterior, estamos em um loop do For
 
     next i
 
