@@ -92,8 +92,10 @@ procedure send_emails(ctes)
         pdf_file := Token(pdf_Link, '/')
 
         if !hb_FileExists(ctePath + pdf_file)
-            ctePath := RegistryRead("HKEY_CURRENT_USER\SOFTWARE\Sistrom\SendToPrinter\InstallPath")
-            if !Empty(ctePath)
+            ctePath := RegistryRead("HKEY_CURRENT_USER\Software\Sistrom\SendToPrinter\InstallPath\Path")
+            if Empty(ctePath)
+                ctePath := empresa:cte_path + '20' + Substr(cte:FieldGet('cte_chave'), 3, 4) + "\"
+            else
                 ctePath += "printed\"
             endif
         endif
