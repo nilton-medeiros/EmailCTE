@@ -103,7 +103,7 @@ Procedure GetMailsWeb()
              oQry:Destroy()
 
           else
-             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql,, true)
+             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + '| SQL: ' + sql)
              MsgStatus( 'Solicitação SQL ao Servidor foi perdida', 'dbOff' )
              PlayExclamation()
              MsgExclamation('Solicitação SQL ao Servidor foi perdida!' + CRLF + "Tente mais tarde, se persistir, chame o suporte.", 'eMailCTe: Monitorando eMail(s)')

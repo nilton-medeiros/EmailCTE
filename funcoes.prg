@@ -43,7 +43,7 @@ Procedure LoadEmpresas()
 
           if ExecutouQuery( @oQuery, cSQL )
              if oQuery:NetErr()
-                RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + cSQL,, true)
+                RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + cSQL)
                 MsgStatus( 'Erro SQL', 'dbError' )
                 PlayExclamation()
                 MsgExclamation('Erro SQL: ' + CRLF + oQuery:Error(), 'eMailCTe: Carregando Empresas')
@@ -56,7 +56,7 @@ Procedure LoadEmpresas()
 
                 if ( oQuery:LastRec() == 0 )
 
-                   RegistraLog('Empresa não cadastrada no sistema TMS Expresso.Cloud' + hb_eol() + 'SQL: ' + cSQL,, true)
+                   RegistraLog('Empresa não cadastrada no sistema TMS Expresso.Cloud' + hb_eol() + 'SQL: ' + cSQL)
                    MsgStatus('Empresa não cadastrada no sistema TMS Expresso.Cloud','dbError')
                    oQuery:Destroy()
                    MsgExclamation('Empresa não cadastrada no sistema TMS Expresso.Cloud', 'eMailCTe')
@@ -74,7 +74,7 @@ Procedure LoadEmpresas()
              oQuery:Destroy()
 
           else
-             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + cSQL,, true)
+             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + cSQL)
              MsgStatus( 'Solicitação SQL ao Servidor foi perdida', 'dbError' )
              PlayExclamation()
              MsgExclamation('Solicitação SQL ao Servidor foi perdida', 'eMailCTe: Empresas')
@@ -102,7 +102,7 @@ Procedure LoadUsuarios()
 
              if oQuery:NetErr()
 
-                RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + cSQL,, true)
+                RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + cSQL)
                 MsgStatus( 'Erro SQL', 'dbError' )
                 PlayExclamation()
                 MsgExclamation('Erro SQL: ' + CRLF + oQuery:Error(), 'eMailCTe: Carregando Usuários')
@@ -133,7 +133,7 @@ Procedure LoadUsuarios()
 
           else
 
-             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + cSQL,, true)
+             RegistraLog('Solicitação SQL ao Servidor foi perdida' + CRLF + cSQL)
              MsgStatus( 'Solicitação SQL ao Servidor foi perdida', 'dbError' )
              PlayExclamation()
              MsgExclamation('Solicitação SQL ao Servidor foi perdida', 'eMailCTe: Usuários')

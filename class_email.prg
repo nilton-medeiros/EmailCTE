@@ -135,7 +135,7 @@ method sendmail() class Tsmtp_email
       log += 'ReplyTo: ' + iif(ValType(::login['ReplyTo']) == "C", ::login['ReplyTo'], '') + hb_eol()
       log += 'TLS: ' + iif(::isTLS, 'true', 'false') + hb_eol()
       log += 'SMTPPass: *******' + hb_eol()
-      RegistraLog(hb_eol()+log, true)
+      RegistraLog(hb_eol()+log)
    endif
 return hb_SendMail( ::server,;
                     ::port,;

@@ -47,7 +47,7 @@ Procedure upload_mail_events()
 
              if ExecutouQuery(@oQuery, mail_sql)
                 if oQuery:NetErr()
-                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + mail_sql,, true)
+                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + mail_sql)
                    MsgStatus('Erro SQL', 'dbError')
                    PlayExclamation()
                    MsgExclamation('Descrição do erro: ' + CRLF + oQuery:Error(), 'eMailCTe: Erro SQL')
@@ -57,7 +57,7 @@ Procedure upload_mail_events()
                 end
                 oQuery:Destroy()
              else
-                RegistraLog('Solicitação SQL ao Servidor foi perdida | ' + "COMANDO SQL: " + CRLF + '| SQL: ' + mail_sql,, true)
+                RegistraLog('Solicitação SQL ao Servidor foi perdida | ' + "COMANDO SQL: " + CRLF + '| SQL: ' + mail_sql)
                 MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
                 PlayExclamation()
                 MsgStop('Solicitação SQL ao Servidor foi perdida' + CRLF + "COMANDO SQL: " + CRLF + mail_sql, 'eMailCTe: Atualizando Base de dados')
@@ -75,7 +75,7 @@ Procedure upload_mail_events()
 
             if ExecutouQuery(@oQuery, evts_sql)
                if oQuery:NetErr()
-                  RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + evts_sql,, true)
+                  RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + evts_sql)
                   MsgStatus('Erro SQL', 'dbError')
                   PlayExclamation()
                   MsgExclamation('Descrição do erro: ' + CRLF + oQuery:Error(), 'eMailCTe: Erro SQL')
@@ -86,7 +86,7 @@ Procedure upload_mail_events()
                oQuery:Destroy()
 
             else
-               RegistraLog('Solicitação SQL ao Servidor foi perdida | COMANDO SQL: ' + CRLF + '| SQL: ' + evts_sql,, true)
+               RegistraLog('Solicitação SQL ao Servidor foi perdida | COMANDO SQL: ' + CRLF + '| SQL: ' + evts_sql)
                MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
                PlayExclamation()
                MsgStop('Solicitação SQL ao Servidor foi perdida' + CRLF + "COMANDO SQL: " + CRLF + evts_sql, 'eMailCTe: Atualizando Base de dados')
@@ -149,7 +149,7 @@ Procedure upload_mail_errors()
 
              if ExecutouQuery(@oQuery, mail_sql)
                 if oQuery:NetErr()
-                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + mail_sql,, true)
+                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + mail_sql)
                    MsgStatus('Erro SQL', 'dbError')
                    PlayExclamation()
                    MsgExclamation('Descrição do erro: ' + CRLF + oQuery:Error(), 'eMailCTe: Erro SQL')
@@ -159,13 +159,13 @@ Procedure upload_mail_errors()
                 end
                 oQuery:Destroy()
              else
-                RegistraLog('Solicitação SQL ao Servidor foi perdida | ' + "COMANDO SQL: " + CRLF + '| SQL: ' + mail_sql,, true)
+                RegistraLog('Solicitação SQL ao Servidor foi perdida | ' + "COMANDO SQL: " + CRLF + '| SQL: ' + mail_sql)
                 MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
                 PlayExclamation()
                 MsgStop('Solicitação SQL ao Servidor foi perdida', 'eMailCTe: Atualizando Base de dados')
                 RELEASE WINDOW ALL
              end
-             RegistraLog('UPDATE SQL: ' + mail_sql,, true )
+             RegistraLog('UPDATE SQL: ' + mail_sql)
 //        else
 //          RegistraLog('Array g_aMaiComErros retornou vazio!')
           end
@@ -178,7 +178,7 @@ Procedure upload_mail_errors()
 
              if ExecutouQuery(@oQuery, evts_sql)
                 if oQuery:NetErr()
-                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + evts_sql,, true)
+                   RegistraLog('Erro SQL: ' + oQuery:Error() + ' | Descrição do comando SQL: ' + CRLF + '| SQL: ' + evts_sql)
                    MsgStatus('Erro SQL', 'dbError')
                    PlayExclamation()
                    MsgExclamation('Descrição do erro: ' + CRLF + oQuery:Error(), 'eMailCTe: Erro SQL')
@@ -187,16 +187,16 @@ Procedure upload_mail_errors()
                    RELEASE WINDOW ALL
                 end
                 oQuery:Destroy()
-                RegistraLog('INSERT SQL: ' + evts_sql,, true )
+                RegistraLog('INSERT SQL: ' + evts_sql)
 
              else
-                RegistraLog('Solicitação SQL ao Servidor foi perdida | COMANDO SQL: ' + CRLF + '| SQL: ' + evts_sql,, true)
+                RegistraLog('Solicitação SQL ao Servidor foi perdida | COMANDO SQL: ' + CRLF + '| SQL: ' + evts_sql)
                 MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
                 PlayExclamation()
                 MsgStop('Solicitação SQL ao Servidor foi perdida', 'eMailCTe: Atualizando Base de dados')
                 RELEASE WINDOW ALL
              end
-             RegistraLog('INSERT SQL: ' + evts_sql,, true )
+             RegistraLog('INSERT SQL: ' + evts_sql)
 //       else
 //          RegistraLog('Array g_aMaiComErros retornou vazio!')
          endif

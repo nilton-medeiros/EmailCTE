@@ -419,7 +419,7 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
             MsgExclamation('Erro SQL: ' + hb_eol() + query:Error(), 'eMailCTe: Carregando Contatos')
             MsgExclamation('Ligue para o Suporte ou tente reiniciar o programa', 'eMailCTe: Erro de SQL')
             query:Destroy()
-            registraLog('Carregando Contatos. Erro SQL: ' + query:Error() + hb_eol() + 'SQL: ' + sql,, true)
+            registraLog('Carregando Contatos. Erro SQL: ' + query:Error() + hb_eol() + 'SQL: ' + sql)
             RELEASE WINDOW ALL
         else
             for j := 1 TO query:LastRec()
@@ -433,7 +433,7 @@ method new(tomador_id, remetente_id, coleta_id, expedidor_id, recebedor_id, dest
         endif
         query:Destroy()
     else
-        registraLog('Solicitação SQL ao Servidor foi perdida' + hb_eol() + '| SQL: ' + sql,, true)
+        registraLog('Solicitação SQL ao Servidor foi perdida' + hb_eol() + '| SQL: ' + sql)
         MsgStatus('Solicitação SQL ao Servidor foi perdida', 'dbError')
         PlayExclamation()
         MsgExclamation({'Solicitação SQL ao Servidor foi perdida', hb_eol(), sql}, 'eMailCTe: Contatos')
