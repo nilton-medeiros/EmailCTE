@@ -41,6 +41,8 @@ create class Tsmtp_email
    method sendmail()
    method reset()
    method destroy()
+   method setMsg(title, msg)
+
 end class
 
 method new(server, port, trace) class Tsmtp_email
@@ -69,6 +71,11 @@ return nil
 
 method setRecipients(eTo, cc, bcc) class Tsmtp_email
    ::recipients := {'To' => eTo, 'Cc' => AClone(cc), 'Bcc' => AClone(bcc)}
+return nil
+
+method setMsg(title, msg) class Tsmtp_email
+   ::subject := title
+   ::body := msg
 return nil
 
 method prepare(content) class Tsmtp_email
