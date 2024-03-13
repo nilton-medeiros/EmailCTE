@@ -19,7 +19,7 @@ Procedure Main
           Public g_iTimer_Erro  := Seconds()
 
           Public g_cRegPath     := "HKEY_CURRENT_USER\SOFTWARE\Sistrom\eMailCTE\"
-          Public g_cVersao      := "4.8.1"
+          Public g_cVersao      := "4.8.2"
 
           // Em algumas rotinas como download ou insert no BD, não poderá aboartar o sistema por causa da atualização
           Public g_lStopExecution := .T.

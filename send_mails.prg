@@ -291,7 +291,7 @@ procedure send_emails(ctes)
                  else
                     MsgStatus('Falha enviando e-mail CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailError' )
                     AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'erro ao enviar e-mail para contador!'} )
-                    AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:msg['Subject']})
+                    AAdd(g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:subject})
                 endif
 
            endif
@@ -301,7 +301,7 @@ procedure send_emails(ctes)
            MsgStatus('Falha enviando e-mail CTE: ' + cte_numero + ' (' + empresa:sigla_cia + ')', 'emailError' )
 
            AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'erro ao enviar e-mails!'})
-           AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:msg['Subject']})
+           AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + CRLF + 'De: ' + oEmail:login['From'] + CRLF + 'Para: ' + oEmail:recipients['To'] + CRLF + 'Assunto: ' + oEmail:subject})
 
            ip_externo := IP_Externo()
 
@@ -309,7 +309,7 @@ procedure send_emails(ctes)
               AAdd( g_aMaiLogEvent, {'emp_id' => emp_id, 'cte_id' => cte:FieldGet('cte_id'), 'data' => date(), 'hora' => time(), 'mensagem' => 'IP Externo: ' + ip_externo})
            end
 
-           registraLog( 'Email não enviado! Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + ' | De: ' + oEmail:login['From'] + ' | Para: ' + oEmail:recipients['To'] + ' | Assunto: ' + oEmail:msg['Subject'] )
+           registraLog( 'Email não enviado! Server: ' + oEmail:server + '| Porta: ' + hb_ntos(oEmail:port) + ' | De: ' + oEmail:login['From'] + ' | Para: ' + oEmail:recipients['To'] + ' | Assunto: ' + oEmail:subject )
 
         endif
 
